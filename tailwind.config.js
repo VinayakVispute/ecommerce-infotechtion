@@ -52,7 +52,20 @@ export default {
 					'3': 'hsl(var(--chart-3))',
 					'4': 'hsl(var(--chart-4))',
 					'5': 'hsl(var(--chart-5))'
-				}
+				},
+				gray: {
+					100: "#F5F4F4",
+					200: "#DDDBDC",
+					300: "#C4C4C4",
+					400: "#737373",
+					500: "#4C4C4B",
+					600: "#262626",
+				},
+				red: {
+					500: "#D72727",
+					600: "#B22222",
+				},
+				"custom- border": "#dddbdc"
 			},
 			screens: {
 				xs: "480px"

@@ -29,8 +29,8 @@ export default function Header() {
         </div>
       </div>
 
-      <div className="border-b">
-        <div className="container flex items-center h-16 px-4">
+      <div className="border-b h-16">
+        <div className="container flex items-center  px-4 text-gray-500">
           {/* Mobile Menu */}
           <div className="lg:hidden">
             <Sheet>
@@ -64,24 +64,36 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8">
-            <Link to="/" className="text-sm hover:opacity-70">
-              Home
-            </Link>
-            <Link to="/products" className="text-sm hover:opacity-70">
-              Products
-            </Link>
-            <Link to="/about" className="text-sm hover:opacity-70">
-              About
-            </Link>
-            <Link to="/contact" className="text-sm hover:opacity-70">
-              Contact Us
-            </Link>
-          </nav>
+          <div className="hidden lg:inline-flex justify-start items-end  h-16">
+            <div className="px-3 py-5 flex-col justify-start items-end gap-3 inline-flex">
+              <div className="text-center text-neutral-800 text-xs font-normal font-['Maison Neue'] leading-none tracking-tight">
+                Home
+              </div>
+            </div>
+            <div className="px-3 pt-5 flex-col justify-start items-end gap-[18px] inline-flex">
+              <div className="text-center text-neutral-800 text-xs font-normal font-['Maison Neue'] leading-none tracking-tight">
+                Products
+              </div>
+              <div className="self-stretch h-0.5 bg-neutral-800" />
+            </div>
+            <div className="px-3 py-5 flex-col justify-start items-end gap-3 inline-flex">
+              <div className="text-center text-neutral-800 text-xs font-normal font-['Maison Neue'] leading-none tracking-tight">
+                About
+              </div>
+            </div>
+            <div className="px-3 py-5 flex-col justify-start items-end gap-3 inline-flex">
+              <div className="text-center text-neutral-800 text-xs font-normal font-['Maison Neue'] leading-none tracking-tight">
+                Contact Us
+              </div>
+            </div>
+          </div>
 
           {/* Logo */}
           <div className="flex-1 text-center">
-            <Link to="/" className="text-xl font-normal tracking-widest">
+            <Link
+              to="/"
+              className="text-xl font-normal tracking-widest text-black hover:text-black"
+            >
               EVERLANE
             </Link>
           </div>
