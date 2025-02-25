@@ -7,7 +7,7 @@ import { Button } from "../ui/button";
 
 export default function Header() {
   return (
-    <header className="w-full">
+    <header className="w-full sticky top-0 z-50 bg-white">
       <div className="w-full bg-black text-white text-sm py-2 px-4">
         <div className="container flex justify-around xs:justify-between items-center gap-x-2">
           <div className="w-full flex text-center flex-col xs:flex-row justify-center ">

@@ -1,27 +1,49 @@
 import { Checkbox } from "@/components/ui/checkbox";
+import { categoriesResponse, useCategories } from "@/hooks/useCategories";
 
-const categories = [
-  "Everyone - All Gender Collection",
-  "Accessories & Gift Cards",
-  "Backpacks, Weekenders & Duffle Bags",
-  "Dress Shirts & Button Downs",
-];
+interface CategoryFilterProps {
+  selectedCategory: string | null;
+  onCategoryChange: (category: string | null) => void;
+}
 
-export function CategoryFilter() {
+export function CategoryFilter({
+  selectedCategory,
+  onCategoryChange,
+}: CategoryFilterProps) {
+  const { data: categories, isLoading, isError } = useCategories();
+
+  if (isLoading) return <div>Loading categories...</div>;
+  if (isError) return <div>Error loading categories</div>;
+
   return (
     <div>
-      <h3 className="mb-4 text-gray-800 font-light leading-[21px] tracking-wide">
-        Category
-      </h3>
+      <h3 className="font-medium mb-4 text-[#262626]">Category</h3>
       <div className="space-y-3">
-        {categories.map((category) => (
-          <div key={category} className="flex items-center">
-            <Checkbox id={category} />
+        <div className="flex items-center">
+          <Checkbox
+            id="all-categories"
+            checked={selectedCategory === null}
+            onCheckedChange={() => onCategoryChange(null)}
+          />
+          <label
+            htmlFor="all-categories"
+            className="ml-2 text-sm text-[#737373]"
+          >
+            All Categories
+          </label>
+        </div>
+        {categories?.map(({ slug, name }: categoriesResponse, index) => (
+          <div key={index} className="flex items-center">
+            <Checkbox
+              id={slug}
+              checked={selectedCategory === slug}
+              onCheckedChange={() => onCategoryChange(slug)}
+            />
             <label
-              htmlFor={category}
-              className="ml-2 text-sm text-muted-foreground"
+              htmlFor={slug}
+              className="ml-2 text-sm text-[#737373] capitalize"
             >
-              {category}
+              {name}
             </label>
           </div>
         ))}
