@@ -12,7 +12,7 @@ export function Sidebar({
   onCategoryChange,
 }: SidebarProps) {
   return (
-    <aside className={`bg-[#f5f4f4] p-6 ${className}`}>
+    <div className={`bg-[#f5f4f4] p-6 ${className}`}>
       <div className="space-y-6">
         <CategoryFilter
           selectedCategory={selectedCategory}
@@ -20,6 +20,6 @@ export function Sidebar({
         />
         <PriceRange />
       </div>
-    </aside>
+    </div>
   );
 }

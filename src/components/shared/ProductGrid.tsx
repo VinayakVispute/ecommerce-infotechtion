@@ -1,4 +1,3 @@
-import type { Product } from "@/types";
 import { ProductCard } from "./ProductCard";
 import { useProducts } from "@/hooks/useProducts";
 import { useState } from "react";
@@ -22,10 +21,12 @@ export function ProductGrid({ category }: ProductGridProps) {
   const totalPages = Math.ceil((data?.total || 0) / 9);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {data?.products.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
+    <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {data?.products.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
       <Pagination
         currentPage={page}
         totalPages={totalPages}

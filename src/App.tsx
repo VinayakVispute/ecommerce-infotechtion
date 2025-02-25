@@ -15,7 +15,7 @@ export default function Page() {
       <div className="flex flex-1">
         <div className="flex flex-col md:flex-row gap-8">
           <Sidebar
-            className="hidden md:block w-64 fixed h-screen overflow-y-auto "
+            className="pb-2 md:pb-6 md:block md:w-64 md:fixed md:h-screen overflow-y-auto"
             selectedCategory={selectedCategory}
             onCategoryChange={setSelectedCategory}
           />
