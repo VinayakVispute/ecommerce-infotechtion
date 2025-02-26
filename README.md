@@ -81,13 +81,14 @@ To run this project locally:
 1. Clone the repository
 2. Install dependencies: `npm install`
 3. Run the development server: `npm run dev`
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+4. Open [http://localhost:5173](http://localhost:5173) in your browser
 
 ## Repository Links
 
-- Frontend: [https://github.com/yourusername/ecommerce-frontend](https://github.com/yourusername/ecommerce-frontend)
-- Server: [https://dummyjson-custom.onrender.com](https://dummyjson-custom.onrender.com)
+- Frontend Live URL: [https://ecommerce-infotechtion-qkeb.vercel.app/](https://ecommerce-infotechtion-qkeb.vercel.app/)
+- Server Live: [https://dummyjson-custom.onrender.com](https://dummyjson-custom.onrender.com)
 - Server GitHub: [https://github.com/VinayakVispute/dummyjson-custorm](https://github.com/VinayakVispute/dummyjson-custorm)
+- Figma : [https://www.figma.com/design/AYQeGF06HEoz7OgAJrahn3/Final-Vinayak?node-id=0-1&t=yOyCCkxZ6W0m8x1F-1](https://www.figma.com/design/AYQeGF06HEoz7OgAJrahn3/Final-Vinayak?node-id=0-1&t=yOyCCkxZ6W0m8x1F-1)
 
 ## Contributing
 
