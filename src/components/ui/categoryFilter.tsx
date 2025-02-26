@@ -30,7 +30,7 @@ export function CategoryFilter({
   return (
     <div className="overflow-y-auto">
       <h3 className="font-medium mb-4 text-[#262626]">Category</h3>
-      <ScrollArea className="max-h-[270px] overflow-y-auto">
+      <ScrollArea className="max-h-[250px] overflow-y-auto">
         <div className="space-y-3">
           <div className="flex items-center">
             <Checkbox

@@ -38,7 +38,6 @@ export function Sidebar({
           maxPrice={maxPrice}
         />
         <div>
-          <h3 className="font-medium mb-4 text-[#262626]">Sort By</h3>
           <SortDropdown currentSort={currentSort} onSortChange={onSortChange} />
         </div>
       </div>

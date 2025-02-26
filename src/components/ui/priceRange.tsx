@@ -21,10 +21,13 @@ export function PriceRange({
     maxPrice || 1000,
   ]);
   useEffect(() => {
-    setPriceRange([minPrice || 0, maxPrice || 1000]);
+    setPriceRange([minPrice || 0, maxPrice || 100000]);
   }, [minPrice, maxPrice]);
 
   const handlePriceChange = (values: number[]) => {
+    if (values[1] >= 1000) {
+      values[1] = 100000;
+    }
     setPriceRange(values as [number, number]);
     onPriceChange(values[0], values[1]);
   };
@@ -42,7 +45,7 @@ export function PriceRange({
         </h3>
         <div className="text-sm text-muted-foreground font-light leading-[21px] tracking-wide">
           <span>${priceRange[0]}</span> -
-          <span>{`$${priceRange[1]}${priceRange[1] === 1000 ? "+" : ""}`}</span>
+          <span>{priceRange[1] > 1000 ? "$1000+" : `$${priceRange[1]}`}</span>
         </div>
       </div>
       <div className="space-y-4">
@@ -60,9 +63,12 @@ export function PriceRange({
           <span>$0</span>
           <span>$1000+</span>
         </div>
-        <Button variant="outline" size="sm" onClick={handleClearPrice}>
+        <button
+          className="text-blue-500 hover:underline focus:outline-none text-sm"
+          onClick={handleClearPrice}
+        >
           Clear Price Filter
-        </Button>
+        </button>
       </div>
     </div>
   );
