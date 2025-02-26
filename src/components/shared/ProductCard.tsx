@@ -3,12 +3,13 @@ import { ColorPicker } from "../ui/colorPicker";
 import { ProductTags } from "../ui/productTags";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import { memo } from "react";
 
 interface ProductCardProps {
   product: Product;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+const ProductCard = memo(function ProductCard({ product }: ProductCardProps) {
   const discountedPercentage = Math.round(product.discountPercentage);
   const originalPrice = Math.round(
     product.price / (1 - product.discountPercentage / 100)
@@ -52,4 +53,5 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
     </div>
   );
-}
+});
+export { ProductCard };

@@ -1,6 +1,6 @@
 import { ProductCard } from "./ProductCard";
 import { useProducts } from "@/hooks/useProducts";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { Pagination } from "../ui/pagination";
 import { ProductSkeleton } from "./ProductSkeleton";
 import { ErrorDisplay } from "./ErrorDisplay";
@@ -41,13 +41,17 @@ export function ProductGrid({
     });
   }, [page, isLoading]);
 
-  const handlePageChange = (newPage: number) => {
+  const handlePageChange = useCallback((newPage: number) => {
     setPage(newPage);
-  };
+  }, []);
 
   const resetPage = useCallback(() => {
     setPage(1);
   }, []);
+
+  useEffect(() => {
+    resetPage();
+  }, [resetPage, category, sortBy, order, minPrice, maxPrice, searchQuery]);
 
   if (isLoading) {
     return (

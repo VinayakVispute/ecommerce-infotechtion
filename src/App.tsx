@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useCallback, useState, useMemo } from "react";
 import { Footer } from "./components/shared/Footer";
-import Header from "./components/shared/Header";
+import { Header } from "./components/shared/Header";
 import { ProductGrid } from "./components/shared/ProductGrid";
 import { Sidebar } from "./components/shared/Sidebar";
 import { Breadcrumb } from "./components/ui/breadCrumb";
@@ -15,14 +15,15 @@ export default function Page() {
   const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const handlePriceChange = (
-    min: number | undefined,
-    max: number | undefined
-  ) => {
-    setMinPrice(min);
-    setMaxPrice(max);
-  };
-  const handleSortChange = (newSort: string) => {
+  const handlePriceChange = useCallback(
+    (min: number | undefined, max: number | undefined) => {
+      setMinPrice(min);
+      setMaxPrice(max);
+    },
+    []
+  );
+
+  const handleSortChange = useCallback((newSort: string) => {
     if (newSort === "price_asc") {
       setSortBy("price");
       setOrder("asc");
@@ -33,27 +34,42 @@ export default function Page() {
       setSortBy(undefined);
       setOrder(undefined);
     }
-  };
+  }, []);
 
-  const handleSearch = (query: string) => {
+  const handleSearch = useCallback((query: string) => {
     setSearchQuery(query);
-  };
+  }, []);
+
+  const memoizedSidebar = useMemo(
+    () => (
+      <Sidebar
+        className="pb-2 md:pb-6 md:block md:w-64 md:fixed md:h-screen md:overflow-y-auto"
+        selectedCategory={selectedCategory}
+        onCategoryChange={setSelectedCategory}
+        currentSort={sortBy && order ? `${sortBy}_${order}` : undefined}
+        onSortChange={handleSortChange}
+        minPrice={minPrice}
+        maxPrice={maxPrice}
+        onPriceChange={handlePriceChange}
+      />
+    ),
+    [
+      selectedCategory,
+      sortBy,
+      order,
+      handleSortChange,
+      minPrice,
+      maxPrice,
+      handlePriceChange,
+    ]
+  );
 
   return (
     <div className="min-h-screen bg-[#f5f4f4] flex flex-col">
       <Header onSearch={handleSearch} />
       <div className="flex flex-1 w-full overflow-x-hidden">
         <div className="w-full flex flex-col md:flex-row">
-          <Sidebar
-            className="pb-2 md:pb-6 md:block md:w-64 md:fixed md:h-screen md:overflow-y-auto"
-            selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
-            currentSort={sortBy && order ? `${sortBy}_${order}` : undefined}
-            onSortChange={handleSortChange}
-            minPrice={minPrice}
-            maxPrice={maxPrice}
-            onPriceChange={handlePriceChange}
-          />
+          {memoizedSidebar}
           <div className="flex-1 md:ml-64">
             <div className="container mx-auto px-4 py-8 max-w-full">
               <Breadcrumb items={breadcrumbItems} />

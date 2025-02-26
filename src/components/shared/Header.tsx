@@ -2,7 +2,7 @@
 
 import type React from "react";
 import { useDebounce } from "use-debounce";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo, memo } from "react";
 import { Search, ShoppingBag, Menu } from "lucide-react";
 import { Link } from "react-router";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
@@ -12,17 +12,17 @@ interface HeaderProps {
   onSearch: (query: string) => void;
 }
 
-export default function Header({ onSearch }: HeaderProps) {
+const Header = memo(function Header({ onSearch }: HeaderProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery] = useDebounce(searchQuery, 300);
 
-  const throttledSearch = useCallback(
-    throttle((query: string) => {
-      console.log(query);
-      onSearch(query);
-    }, 1000),
-    []
+  const throttledSearch = useMemo(
+    () =>
+      throttle((query: string) => {
+        onSearch(query);
+      }, 1000),
+    [onSearch]
   );
 
   useEffect(() => {
@@ -33,19 +33,26 @@ export default function Header({ onSearch }: HeaderProps) {
     }
   }, [debouncedSearchQuery, throttledSearch, onSearch]);
 
-  const handleSearchClick = () => {
+  const handleSearchClick = useCallback(() => {
     setIsSearchOpen((prev) => !prev);
-  };
+  }, []);
 
-  const handleCancelClick = () => {
+  const handleCancelClick = useCallback(() => {
     setIsSearchOpen(false);
     setSearchQuery("");
     onSearch("");
-  };
+  }, [onSearch]);
 
   useEffect(() => {
     onSearch(debouncedSearchQuery);
   }, [debouncedSearchQuery, onSearch]);
+
+  const handleSearchInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchQuery(e.target.value);
+    },
+    []
+  );
 
   return (
     <header className="w-full sticky top-0 z-50 bg-white">
@@ -137,7 +144,7 @@ export default function Header({ onSearch }: HeaderProps) {
                   <input
                     type="text"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={handleSearchInputChange}
                     placeholder="Search"
                     className="w-full h-10 px-4 text-sm text-center bg-[#fafafa] border border-[#dddbdc] rounded-sm focus:outline-none focus:border-[#262626]"
                     autoFocus={isSearchOpen}
@@ -205,4 +212,5 @@ export default function Header({ onSearch }: HeaderProps) {
       </div>
     </header>
   );
-}
+});
+export { Header };
