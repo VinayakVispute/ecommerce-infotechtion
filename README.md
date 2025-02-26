@@ -4,14 +4,29 @@ This document outlines the step-by-step process of developing our e-commerce app
 
 ## Table of Contents
 
-1. [Planning & Initial Setup](#planning--initial-setup)
-2. [Design Inspiration](#design-inspiration)
-3. [Frontend Implementation](#frontend-implementation)
-4. [Backend Integration](#backend-integration)
-5. [Feature Implementation](#feature-implementation)
-6. [Logic Implementation](#logic-implementation)
-7. [Optimization](#optimization)
-8. [Finalization](#finalization)
+1. [Tech Stack](#tech-stack)
+2. [Planning & Initial Setup](#planning--initial-setup)
+3. [Design Inspiration](#design-inspiration)
+4. [Frontend Implementation](#frontend-implementation)
+5. [Backend Integration](#backend-integration)
+6. [Feature Implementation](#feature-implementation)
+7. [Logic Implementation](#logic-implementation)
+8. [Optimization](#optimization)
+9. [Finalization](#finalization)
+
+## Tech Stack
+
+Our e-commerce application is built using a modern and robust tech stack:
+
+1. **Next.js**: A React framework for building server-side rendered and statically generated web applications.
+2. **React**: A JavaScript library for building user interfaces, used for creating reusable UI components.
+3. **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript, enhancing code quality and understandability.
+4. **Tailwind CSS**: A utility-first CSS framework for rapidly building custom user interfaces.
+5. **React Query**: A library for managing, caching, and syncing asynchronous and remote data in React.
+6. **Lucide React**: A library of simply beautiful open source icons.
+7. **Radix UI**: A low-level UI component library with a focus on accessibility, customization and developer experience.
+8. **Lodash**: A modern JavaScript utility library delivering modularity, performance & extras.
+9. **use-debounce**: A lightweight React hook for debouncing values.
 
 ## Planning & Initial Setup
 
