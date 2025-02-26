@@ -1,6 +1,6 @@
 import { ProductCard } from "./ProductCard";
 import { useProducts } from "@/hooks/useProducts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pagination } from "../ui/pagination";
 
 interface ProductGridProps {
@@ -10,6 +10,18 @@ interface ProductGridProps {
 export function ProductGrid({ category }: ProductGridProps) {
   const [page, setPage] = useState(1);
   const { data, isLoading, isError } = useProducts(page, category);
+
+  // Scroll to top when page changes
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [page, isLoading]);
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
 
   if (isLoading)
     return <div className="text-center text-[#262626]">Loading...</div>;
@@ -30,7 +42,7 @@ export function ProductGrid({ category }: ProductGridProps) {
       <Pagination
         currentPage={page}
         totalPages={totalPages}
-        onPageChange={(newPage: number) => setPage(newPage)}
+        onPageChange={handlePageChange}
       />
     </div>
   );

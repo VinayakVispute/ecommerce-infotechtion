@@ -1,6 +1,8 @@
 import type { Product } from "@/types";
 import { ColorPicker } from "../ui/colorPicker";
 import { ProductTags } from "../ui/productTags";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 interface ProductCardProps {
   product: Product;
@@ -20,10 +22,11 @@ export function ProductCard({ product }: ProductCardProps) {
             {discountedPercentage}% off
           </span>
         )}
-        <img
-          src={product.thumbnail || "/placeholder.svg"}
+        <LazyLoadImage
+          src={product.thumbnail || "/assets/placeholder.svg"}
           alt={product.title}
           className="w-full h-full object-cover"
+          effect="blur"
         />
       </div>
       <div className="flex flex-col flex-grow space-y-1">
