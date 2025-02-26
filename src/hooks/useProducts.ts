@@ -9,7 +9,7 @@ interface ProductResponse {
 }
 
 const LIMIT: number = 9; // Set a default pagination limit
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "https://dummyjson-custom.onrender.com";
 
 interface ProductResponse {
   products: Product[];
