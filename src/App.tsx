@@ -12,15 +12,15 @@ export default function Page() {
   return (
     <div className="min-h-screen bg-[#f5f4f4] flex flex-col">
       <Header />
-      <div className="flex flex-1">
-        <div className="flex flex-col md:flex-row gap-8">
+      <div className="flex flex-1 w-full overflow-x-hidden">
+        <div className="w-full flex flex-col md:flex-row">
           <Sidebar
-            className="pb-2 md:pb-6 md:block md:w-64 md:fixed md:h-screen overflow-y-auto"
+            className="pb-2 md:pb-6 md:block md:w-64 md:fixed md:h-screen md:overflow-y-auto"
             selectedCategory={selectedCategory}
             onCategoryChange={setSelectedCategory}
           />
           <div className="flex-1 md:ml-64">
-            <div className="container mx-auto px-4 py-8">
+            <div className="container mx-auto px-4 py-8 max-w-full">
               <Breadcrumb items={breadcrumbItems} />
               <main>
                 <div className="text-black text-[32px] font-normal leading-10">
