@@ -6,7 +6,7 @@ export interface categoriesResponse {
 }
 
 async function fetchCategories(): Promise<categoriesResponse[]> {
-  const response = await fetch("https://dummyjson.com/products/categories");
+  const response = await fetch("http://localhost:3000/categories");
 
   if (!response.ok) {
     throw new Error("Failed to fetch categories");

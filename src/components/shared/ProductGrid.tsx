@@ -5,11 +5,28 @@ import { Pagination } from "../ui/pagination";
 
 interface ProductGridProps {
   category: string | null;
+  sortBy?: string;
+  order?: string;
+  minPrice?: number;
+  maxPrice?: number;
 }
 
-export function ProductGrid({ category }: ProductGridProps) {
+export function ProductGrid({
+  category,
+  sortBy,
+  order,
+  minPrice,
+  maxPrice,
+}: ProductGridProps) {
   const [page, setPage] = useState(1);
-  const { data, isLoading, isError } = useProducts(page, category);
+  const { data, isLoading, isError } = useProducts({
+    page,
+    category,
+    sortBy,
+    order,
+    minPrice,
+    maxPrice,
+  });
 
   // Scroll to top when page changes
   useEffect(() => {

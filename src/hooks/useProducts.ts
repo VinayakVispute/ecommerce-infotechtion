@@ -9,22 +9,48 @@ interface ProductResponse {
 }
 
 const LIMIT: number = 9; // Set a default pagination limit
+const BASE_URL = "http://localhost:3000";
 
-async function fetchProducts(
-  page: number,
-  category: string | null
-): Promise<ProductResponse> {
-  let baseUrl = `https://dummyjson.com/products?limit=${LIMIT}&skip=${
-    (page - 1) * LIMIT
-  }&select=id,title,description,price,discountPercentage,category,thumbnail,tags`;
+interface ProductResponse {
+  products: Product[];
+  total: number;
+  skip: number;
+  limit: number;
+}
 
-  if (category) {
-    baseUrl = `https://dummyjson.com/products/category/${category}?limit=${LIMIT}&skip=${
-      (page - 1) * LIMIT
-    }`;
-  }
+interface FetchProductsParams {
+  page: number;
+  category: string | null;
+  sortBy?: string;
+  order?: string;
+  minPrice?: number;
+  maxPrice?: number;
+}
 
-  const response = await fetch(baseUrl);
+async function fetchProducts({
+  page,
+  category,
+  sortBy,
+  order,
+  minPrice,
+  maxPrice,
+}: FetchProductsParams): Promise<ProductResponse> {
+  const skip = (page - 1) * LIMIT;
+
+  const params = new URLSearchParams({
+    limit: LIMIT.toString(),
+    skip: skip.toString(),
+  });
+
+  if (category) params.append("category", category);
+  if (sortBy) params.append("sortBy", sortBy);
+  if (order) params.append("order", order);
+  if (minPrice !== undefined) params.append("minPrice", minPrice.toString());
+  if (maxPrice !== undefined) params.append("maxPrice", maxPrice.toString());
+
+  const url = `${BASE_URL}/products?${params.toString()}`;
+  console.log(url);
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error("Failed to fetch products");
@@ -33,10 +59,18 @@ async function fetchProducts(
   return response.json();
 }
 
-export function useProducts(page: number, category: string | null) {
+export function useProducts({
+  page,
+  category,
+  sortBy,
+  order,
+  minPrice,
+  maxPrice,
+}: FetchProductsParams) {
   return useQuery<ProductResponse>({
-    queryKey: ["products", page, category],
-    queryFn: () => fetchProducts(page, category),
+    queryKey: ["products", page, category, sortBy, order, minPrice, maxPrice],
+    queryFn: () =>
+      fetchProducts({ page, category, sortBy, order, minPrice, maxPrice }),
     staleTime: 15000, // Data is fresh for 15 seconds
   });
 }
