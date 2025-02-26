@@ -13,8 +13,12 @@ export default function Page() {
   const [order, setOrder] = useState<string | undefined>(undefined);
   const [minPrice, setMinPrice] = useState<number | undefined>(undefined);
   const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const handlePriceChange = (min: number, max: number) => {
+  const handlePriceChange = (
+    min: number | undefined,
+    max: number | undefined
+  ) => {
     setMinPrice(min);
     setMaxPrice(max);
   };
@@ -30,9 +34,14 @@ export default function Page() {
       setOrder(undefined);
     }
   };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
   return (
     <div className="min-h-screen bg-[#f5f4f4] flex flex-col">
-      <Header />
+      <Header onSearch={handleSearch} />
       <div className="flex flex-1 w-full overflow-x-hidden">
         <div className="w-full flex flex-col md:flex-row">
           <Sidebar
@@ -50,7 +59,10 @@ export default function Page() {
               <Breadcrumb items={breadcrumbItems} />
               <main>
                 <div className="text-black text-[32px] font-normal leading-10">
-                  Men's Clothing & Apparel - New Arrivals
+                  {selectedCategory
+                    ? selectedCategory.charAt(0).toUpperCase() +
+                      selectedCategory.slice(1)
+                    : "All Products"}
                 </div>
                 <div className="text-black text-base font-normal leading-normal tracking-wide">
                   Featured
@@ -61,6 +73,7 @@ export default function Page() {
                   order={order}
                   minPrice={minPrice}
                   maxPrice={maxPrice}
+                  searchQuery={searchQuery}
                 />
               </main>
             </div>

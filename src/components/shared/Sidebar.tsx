@@ -6,7 +6,7 @@ interface SidebarProps {
   className?: string;
   selectedCategory: string | null;
   onCategoryChange: (category: string | null) => void;
-  currentSort: string;
+  currentSort?: string;
   onSortChange: (sort: string) => void;
   minPrice?: number;
   maxPrice?: number;

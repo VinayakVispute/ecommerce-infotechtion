@@ -25,6 +25,7 @@ interface FetchProductsParams {
   order?: string;
   minPrice?: number;
   maxPrice?: number;
+  searchQuery?: string;
 }
 
 async function fetchProducts({
@@ -34,6 +35,7 @@ async function fetchProducts({
   order,
   minPrice,
   maxPrice,
+  searchQuery,
 }: FetchProductsParams): Promise<ProductResponse> {
   const skip = (page - 1) * LIMIT;
 
@@ -48,8 +50,28 @@ async function fetchProducts({
   if (minPrice !== undefined) params.append("minPrice", minPrice.toString());
   if (maxPrice !== undefined) params.append("maxPrice", maxPrice.toString());
 
-  const url = `${BASE_URL}/products?${params.toString()}`;
-  console.log(url);
+  console.log({
+    page,
+    category,
+    sortBy,
+    order,
+    minPrice,
+    maxPrice,
+    searchQuery,
+  });
+
+  let url: string;
+
+  if (searchQuery) {
+    // Use the search endpoint if there's a search query
+    url = `${BASE_URL}/products/search?q=${encodeURIComponent(
+      searchQuery
+    )}&${params.toString()}`;
+  } else {
+    // Use the regular products endpoint for other operations
+    url = `${BASE_URL}/products?${params.toString()}`;
+  }
+  console.log("his is url", url);
   const response = await fetch(url);
 
   if (!response.ok) {
@@ -66,11 +88,29 @@ export function useProducts({
   order,
   minPrice,
   maxPrice,
+  searchQuery,
 }: FetchProductsParams) {
   return useQuery<ProductResponse>({
-    queryKey: ["products", page, category, sortBy, order, minPrice, maxPrice],
+    queryKey: [
+      "products",
+      page,
+      category,
+      sortBy,
+      order,
+      minPrice,
+      maxPrice,
+      searchQuery,
+    ],
     queryFn: () =>
-      fetchProducts({ page, category, sortBy, order, minPrice, maxPrice }),
+      fetchProducts({
+        page,
+        category,
+        sortBy,
+        order,
+        minPrice,
+        maxPrice,
+        searchQuery,
+      }),
     staleTime: 15000, // Data is fresh for 15 seconds
   });
 }

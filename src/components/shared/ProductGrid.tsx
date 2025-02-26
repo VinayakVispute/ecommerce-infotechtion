@@ -1,7 +1,9 @@
 import { ProductCard } from "./ProductCard";
 import { useProducts } from "@/hooks/useProducts";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Pagination } from "../ui/pagination";
+import { ProductSkeleton } from "./ProductSkeleton";
+import { ErrorDisplay } from "./ErrorDisplay";
 
 interface ProductGridProps {
   category: string | null;
@@ -9,6 +11,7 @@ interface ProductGridProps {
   order?: string;
   minPrice?: number;
   maxPrice?: number;
+  searchQuery?: string;
 }
 
 export function ProductGrid({
@@ -17,15 +20,17 @@ export function ProductGrid({
   order,
   minPrice,
   maxPrice,
+  searchQuery,
 }: ProductGridProps) {
   const [page, setPage] = useState(1);
-  const { data, isLoading, isError } = useProducts({
+  const { data, isLoading, isError, error, refetch } = useProducts({
     page,
     category,
     sortBy,
     order,
     minPrice,
     maxPrice,
+    searchQuery,
   });
 
   // Scroll to top when page changes
@@ -40,13 +45,31 @@ export function ProductGrid({
     setPage(newPage);
   };
 
-  if (isLoading)
-    return <div className="text-center text-[#262626]">Loading...</div>;
-  if (isError)
-    return (
-      <div className="text-center text-[#d72727]">Error fetching products</div>
-    );
+  const resetPage = useCallback(() => {
+    setPage(1);
+  }, []);
 
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {[...Array(9)].map((_, index) => (
+          <ProductSkeleton key={index} />
+        ))}
+      </div>
+    );
+  }
+  if (isError) {
+    return (
+      <ErrorDisplay
+        message={
+          error instanceof Error
+            ? error.message
+            : "Failed to load products. Please try again."
+        }
+        onRetry={() => refetch()}
+      />
+    );
+  }
   const totalPages = Math.ceil((data?.total || 0) / 9);
 
   return (

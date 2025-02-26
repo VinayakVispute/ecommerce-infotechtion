@@ -1,11 +1,10 @@
-"use client";
-
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { type categoriesResponse, useCategories } from "@/hooks/useCategories";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { CategorySkeleton } from "../shared/CategorySkeleton";
 
 interface CategoryFilterProps {
   selectedCategory: string | null;
@@ -19,8 +18,9 @@ export function CategoryFilter({
   const { data: categories, isLoading, isError } = useCategories();
   const [isExpanded, setIsExpanded] = useState(false);
 
-  if (isLoading)
-    return <div className="text-[#737373]">Loading categories...</div>;
+  if (isLoading) {
+    return <CategorySkeleton />;
+  }
   if (isError)
     return <div className="text-[#d72727]">Error loading categories</div>;
 

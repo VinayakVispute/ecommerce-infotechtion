@@ -1,11 +1,52 @@
 "use client";
 
+import type React from "react";
+import { useDebounce } from "use-debounce";
+import { useState, useEffect, useCallback } from "react";
 import { Search, ShoppingBag, Menu } from "lucide-react";
 import { Link } from "react-router";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
+import { throttle } from "lodash";
+interface HeaderProps {
+  onSearch: (query: string) => void;
+}
 
-export default function Header() {
+export default function Header({ onSearch }: HeaderProps) {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 300);
+
+  const throttledSearch = useCallback(
+    throttle((query: string) => {
+      console.log(query);
+      onSearch(query);
+    }, 1000),
+    []
+  );
+
+  useEffect(() => {
+    if (debouncedSearchQuery) {
+      throttledSearch(debouncedSearchQuery);
+    } else {
+      onSearch("");
+    }
+  }, [debouncedSearchQuery, throttledSearch, onSearch]);
+
+  const handleSearchClick = () => {
+    setIsSearchOpen((prev) => !prev);
+  };
+
+  const handleCancelClick = () => {
+    setIsSearchOpen(false);
+    setSearchQuery("");
+    onSearch("");
+  };
+
+  useEffect(() => {
+    onSearch(debouncedSearchQuery);
+  }, [debouncedSearchQuery, onSearch]);
+
   return (
     <header className="w-full sticky top-0 z-50 bg-white">
       <div className="w-full bg-black text-white text-sm py-2 px-4">
@@ -29,8 +70,8 @@ export default function Header() {
         </div>
       </div>
 
-      <div className="border-b h-16">
-        <div className="container flex items-center  px-4 text-gray-500">
+      <div className="border-b">
+        <div className="container flex items-center h-16 px-4 text-gray-500">
           {/* Mobile Menu */}
           <div className="lg:hidden">
             <Sheet>
@@ -64,7 +105,7 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:inline-flex justify-start items-end  h-16">
+          <div className="hidden lg:inline-flex justify-start items-end h-16">
             <div className="px-3 py-5 flex-col justify-start items-end gap-3 inline-flex">
               <div className="text-center text-neutral-800 text-xs font-normal font-['Maison Neue'] leading-none tracking-tight">
                 Home
@@ -88,14 +129,36 @@ export default function Header() {
             </div>
           </div>
 
-          {/* Logo */}
-          <div className="flex-1 text-center">
-            <Link
-              to="/"
-              className="text-xl font-normal tracking-widest text-black hover:text-black"
-            >
-              EVERLANE
-            </Link>
+          {/* Logo or Search Bar */}
+          <div className="flex-1 flex justify-center items-center">
+            {isSearchOpen ? (
+              <div className="w-full max-w-2xl">
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search"
+                    className="w-full h-10 px-4 text-sm text-center bg-[#fafafa] border border-[#dddbdc] rounded-sm focus:outline-none focus:border-[#262626]"
+                    autoFocus={isSearchOpen}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleCancelClick}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-[#262626] hover:text-[#737373] transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <Link
+                to="/"
+                className="text-xl font-normal tracking-widest text-black hover:text-black"
+              >
+                EVERLANE
+              </Link>
+            )}
           </div>
 
           {/* Right Icons */}
@@ -104,6 +167,7 @@ export default function Header() {
               variant="ghost"
               size="icon"
               className="hover:bg-transparent"
+              onClick={handleSearchClick}
             >
               <Search className="h-5 w-5" />
               <span className="sr-only">Search</span>
