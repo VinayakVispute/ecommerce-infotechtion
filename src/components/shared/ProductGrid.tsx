@@ -1,6 +1,6 @@
 import { ProductCard } from "./ProductCard";
 import { useProducts } from "@/hooks/useProducts";
-import { useCallback, useEffect, useState, useMemo } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Pagination } from "../ui/pagination";
 import { ProductSkeleton } from "./ProductSkeleton";
 import { ErrorDisplay } from "./ErrorDisplay";
